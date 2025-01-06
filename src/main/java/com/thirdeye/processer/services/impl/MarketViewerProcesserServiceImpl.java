@@ -177,7 +177,7 @@ public class MarketViewerProcesserServiceImpl implements MarketViewerProcesserSe
         return topStocks;
     }
 	
-	@Scheduled(fixedRate = 60000)
+	@Scheduled(fixedRate = 30000)
 	@Override
     public void updateStocksStocksSceduler() {
 		logger.info("Updating data");
