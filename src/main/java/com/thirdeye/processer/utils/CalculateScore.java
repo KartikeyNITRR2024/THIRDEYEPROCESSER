@@ -30,6 +30,10 @@ public class CalculateScore {
 		newLiveStock.setSumScore(oldLiveStock.getSumScore() + totalScore.longValue());
 		Queue<Long> pastSumScores = oldLiveStock.getPastSumScores();
 		pastSumScores.add(0L);
+		if(pastSumScores.size() > 30)
+		{
+			pastSumScores.poll();
+		}
 		newLiveStock.setPastSumScores(pastSumScores);
 		return newLiveStock;
 	}
