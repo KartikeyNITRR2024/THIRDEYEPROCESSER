@@ -27,9 +27,13 @@ public class CalculateScore {
 		Double score1 = ((newLiveStock.getOldPrice() - oldLiveStock.getNewPrice()) * 1000) / (pointsIncrement * minutesDifference * oldLiveStock.getOldPrice());
 		Double totalScore = score + score1;
 		newLiveStock.setScore(totalScore.longValue());
+		if(oldLiveStock.getSumScore() >= 100000L)
+		{
+			oldLiveStock.setSumScore(0L);
+		}
 		newLiveStock.setSumScore(oldLiveStock.getSumScore() + totalScore.longValue());
 		Queue<Long> pastSumScores = oldLiveStock.getPastSumScores();
-		pastSumScores.add(0L);
+		pastSumScores.add(oldLiveStock.getSumScore() + totalScore.longValue());
 		if(pastSumScores.size() > 30)
 		{
 			pastSumScores.poll();
@@ -37,4 +41,28 @@ public class CalculateScore {
 		newLiveStock.setPastSumScores(pastSumScores);
 		return newLiveStock;
 	}
+	
+//	public LiveStockProcesserPayload calculateScoreOfStockStarting(LiveStockProcesserPayload newLiveStock)
+//	{
+//		Double priceRange = ((oldLiveStock.getNewPrice() - oldLiveStock.getOldPrice()) * 1000)/oldLiveStock.getOldPrice();
+//		Double pointsIncrement = priceRange / 1000;
+//		Double score = ((newLiveStock.getNewPrice() - oldLiveStock.getOldPrice()) * 1000) / (pointsIncrement * oldLiveStock.getOldPrice());
+//		long minutesDifference = timeManagementUtil.getDifferenceInMinutes(newLiveStock.getTime(), oldLiveStock.getTime());
+//		if(minutesDifference < 1)
+//		{
+//			minutesDifference = 1;
+//		}
+//		Double score1 = ((newLiveStock.getOldPrice() - oldLiveStock.getNewPrice()) * 1000) / (pointsIncrement * minutesDifference * oldLiveStock.getOldPrice());
+//		Double totalScore = score + score1;
+//		newLiveStock.setScore(totalScore.longValue());
+//		newLiveStock.setSumScore(oldLiveStock.getSumScore() + totalScore.longValue());
+//		Queue<Long> pastSumScores = oldLiveStock.getPastSumScores();
+//		pastSumScores.add(oldLiveStock.getSumScore() + totalScore.longValue());
+//		if(pastSumScores.size() > 30)
+//		{
+//			pastSumScores.poll();
+//		}
+//		newLiveStock.setPastSumScores(pastSumScores);
+//		return newLiveStock;
+//	}
 }

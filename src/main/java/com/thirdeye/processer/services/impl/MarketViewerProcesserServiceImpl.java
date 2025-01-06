@@ -77,9 +77,8 @@ public class MarketViewerProcesserServiceImpl implements MarketViewerProcesserSe
 	{
 		 if(!liveStockList.containsKey((long)liveStockProcesserPayload.getStockId()))
 		 {
-			 System.out.println("FirstTime");
 			 liveStockProcesserPayload.setScore(0L);
-			 liveStockProcesserPayload.setSumScore(0L);
+			 liveStockProcesserPayload.setSumScore(100000L);
 			 Queue<Long> pastSumScores = new LinkedList<>();
 			 pastSumScores.add(0L);
 			 liveStockProcesserPayload.setPastSumScores(pastSumScores);
