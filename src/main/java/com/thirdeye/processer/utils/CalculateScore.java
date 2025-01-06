@@ -1,5 +1,8 @@
 package com.thirdeye.processer.utils;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,9 @@ public class CalculateScore {
 		Double totalScore = score + score1;
 		newLiveStock.setScore(totalScore.longValue());
 		newLiveStock.setSumScore(oldLiveStock.getSumScore() + totalScore.longValue());
+		Queue<Long> pastSumScores = oldLiveStock.getPastSumScores();
+		pastSumScores.add(0L);
+		newLiveStock.setPastSumScores(pastSumScores);
 		return newLiveStock;
 	}
 }

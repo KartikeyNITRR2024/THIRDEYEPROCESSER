@@ -3,9 +3,11 @@ package com.thirdeye.processer.services.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -78,6 +80,9 @@ public class MarketViewerProcesserServiceImpl implements MarketViewerProcesserSe
 			 System.out.println("FirstTime");
 			 liveStockProcesserPayload.setScore(0L);
 			 liveStockProcesserPayload.setSumScore(0L);
+			 Queue<Long> pastSumScores = new LinkedList<>();
+			 pastSumScores.add(0L);
+			 liveStockProcesserPayload.setPastSumScores(pastSumScores);
 			 updatePriorityStock(liveStockProcesserPayload);
 		 }
 		 else
@@ -142,8 +147,11 @@ public class MarketViewerProcesserServiceImpl implements MarketViewerProcesserSe
 		
 		for (Map.Entry<Long, LiveStockProcesserPayload> entry : liveStockList1.entrySet()) {
             LiveStockProcesserPayload payload = entry.getValue();
-            long decreasedScore = (long) (payload.getSumScore() / Math.pow(2, (1.0 / 60)));
+            long decreasedScore = (long) (payload.getSumScore() / Math.pow(2, (1.0 / 20)));
             payload.setSumScore(decreasedScore);
+            Queue<Long> pastSumScores = payload.getPastSumScores();
+            pastSumScores.add(decreasedScore);
+            payload.setPastSumScores(pastSumScores);
             liveStockList2.put(entry.getKey(), payload);
             ArrayList<Long> updatedList = new ArrayList<>();
             updatedList.add(decreasedScore);
@@ -178,7 +186,7 @@ public class MarketViewerProcesserServiceImpl implements MarketViewerProcesserSe
             int count = 0;
             while (iterator.hasNext() && count < noOfStocksToRead) {
             	ArrayList<Long> stock = iterator.next();
-            	topStocks1.add(new ProcesserResponse(stocksListService.getIdToStock(stock.get(1)), stock.get(0)));
+            	topStocks1.add(new ProcesserResponse(stocksListService.getIdToStock(stock.get(1)), stock.get(0), liveStockList.get((long)stock.get(1)).getPastSumScores()));
                 count++;
             }
         } finally {

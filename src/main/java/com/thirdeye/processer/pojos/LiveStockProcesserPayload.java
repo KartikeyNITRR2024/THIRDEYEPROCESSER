@@ -2,6 +2,9 @@ package com.thirdeye.processer.pojos;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,5 +22,6 @@ public class LiveStockProcesserPayload {
 	private Double timeDifference;
 	private Long score;
 	private Long sumScore;
+	private Queue<Long> pastSumScores = new LinkedList<>();
 }
 
