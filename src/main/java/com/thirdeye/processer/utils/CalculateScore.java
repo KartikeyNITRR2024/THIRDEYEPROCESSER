@@ -27,10 +27,6 @@ public class CalculateScore {
 		Double score1 = ((newLiveStock.getOldPrice() - oldLiveStock.getNewPrice()) * 1000) / (pointsIncrement * minutesDifference * oldLiveStock.getOldPrice());
 		Double totalScore = score + score1;
 		newLiveStock.setScore(totalScore.longValue());
-		if(oldLiveStock.getSumScore() >= 100000L)
-		{
-			oldLiveStock.setSumScore(0L);
-		}
 		newLiveStock.setSumScore(oldLiveStock.getSumScore() + totalScore.longValue());
 		Queue<Long> pastSumScores = oldLiveStock.getPastSumScores();
 		pastSumScores.add(oldLiveStock.getSumScore() + totalScore.longValue());
