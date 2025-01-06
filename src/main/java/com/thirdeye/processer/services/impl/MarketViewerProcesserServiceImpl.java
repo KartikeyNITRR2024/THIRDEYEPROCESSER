@@ -120,7 +120,6 @@ public class MarketViewerProcesserServiceImpl implements MarketViewerProcesserSe
         Iterator<ArrayList<Long>> iterator = pq.iterator();
         while (iterator.hasNext()) {
             ArrayList<Long> list = iterator.next();
-            System.out.println("List is "+list);
             if (list.get(1) == value) {
                 iterator.remove();
                 return true;
@@ -150,7 +149,12 @@ public class MarketViewerProcesserServiceImpl implements MarketViewerProcesserSe
             payload.setSumScore(decreasedScore);
             Queue<Long> pastSumScores = payload.getPastSumScores();
             pastSumScores.add(decreasedScore);
+            if(pastSumScores.size() > 30)
+    		{
+    			pastSumScores.poll();
+    		}
             payload.setPastSumScores(pastSumScores);
+            System.out.println("pastSumScores is "+pastSumScores);
             liveStockList2.put(entry.getKey(), payload);
             ArrayList<Long> updatedList = new ArrayList<>();
             updatedList.add(decreasedScore);
